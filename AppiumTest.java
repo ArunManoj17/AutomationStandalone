@@ -1,17 +1,22 @@
-import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.*;
-import org.openqa.selenium.html5.*;
-import org.openqa.selenium.logging.*;
-import org.openqa.selenium.remote.*;
-import org.openqa.selenium.Cookie.Builder;
+import org.openqa.selenium.Platform;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.DriverCommand;
+import org.openqa.selenium.remote.RemoteExecuteMethod;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
-import io.appium.java_client.*;
-import io.appium.java_client.android.*;
-import io.appium.java_client.ios.*;
+//import com.sun.java.util.jar.pack.Attribute.Layout.Element;
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+
+import io.appium.java_client.android.AndroidDriver;
+import jdk.internal.util.xml.impl.Input;
 
 /**
  * For programming samples and updated templates refer to the Perfecto GitHub at: https://github.com/PerfectoCode
@@ -30,7 +35,7 @@ public class AppiumTest {
         System.getProperties().put("https.proxyPort", "8080");
 
         //TODO: Change your device ID
-        capabilities.setCapability("deviceName", "955B0252C50AFBAFF240E6AC814CF4FB1E9F03CF");
+        capabilities.setCapability("deviceName", "1015FA7BCD813803");
 
         // Use the automationName capability to define the required framework - Appium (this is the default) or PerfectoMobile.
         capabilities.setCapability("automationName", "Appium");
@@ -39,12 +44,12 @@ public class AppiumTest {
         PerfectoLabUtils.setExecutionIdCapability(capabilities, host);
 
         // Application settings examples.
-        // capabilities.setCapability("app", "PRIVATE:applications/Errands.ipa");
+         //capabilities.setCapability("app", "PUBLIC:sree/selendroid-test-app-0.16.0.apk");
         // For Android:
-        // capabilities.setCapability("appPackage", "com.google.android.keep");
+          capabilities.setCapability("appPackage", "io.selendroid.testapp");
         // capabilities.setCapability("appActivity", ".activities.BrowseActivity");
         // For iOS:
-         capabilities.setCapability("bundleId", "com.apple.Numbers");
+        // capabilities.setCapability("bundleId", "com.yoctoville.errands");
 
         // Add a persona to your script (see https://community.perfectomobile.com/posts/1048047-available-personas)
         //capabilities.setCapability(WindTunnelUtils.WIND_TUNNEL_PERSONA_CAPABILITY, WindTunnelUtils.GEORGIA);
@@ -52,29 +57,51 @@ public class AppiumTest {
         // Name your script
         // capabilities.setCapability("scriptName", "AppiumTest");
 
-        //AndroidDriver driver = new AndroidDriver(new URL("https://" + host + "/nexperience/perfectomobile/wd/hub"), capabilities);
-         IOSDriver driver = new IOSDriver(new URL("https://" + host + "/nexperience/perfectomobile/wd/hub"), capabilities);
+        AndroidDriver driver = new AndroidDriver(new URL("https://" + host + "/nexperience/perfectomobile/wd/hub"), capabilities);
+        // IOSDriver driver = new IOSDriver(new URL("https://" + host + "/nexperience/perfectomobile/wd/hub"), capabilities);
         driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
         try {
-      
-    
-        
-           	
-        	TouchAction touchAction1 = new TouchAction(driver);
-        	touchAction1.press(305,289).release();
-        	driver.performTouchAction(touchAction1);
-        	
-        	driver.context("NATIVE_APP");
-        	driver.findElementByXPath("//*[@label=\"Rename Charting Basics 3\"]").click();
-        	
-        	Image(driver, "PRIVATE:script\\Apple_iPhone-7_170105_153450.png");
-        	
-        	
+            // write your code here
+       switchToContext(driver, "NATIVE_APP");
+       driver.findElementByXPath("//*[@resource-id=\"io.selendroid.testapp:id/startUserRegistration\"]").click();
+       
+       switchToContext(driver, "NATIVE_APP");
+       driver.findElementByXPath("//*[@resource-id=\"io.selendroid.testapp:id/inputUsername\"]").sendKeys("ArunMadhu");
+       
+       switchToContext(driver, "NATIVE_APP");
+       driver.findElementByXPath("//*[@resource-id=\"io.selendroid.testapp:id/inputEmail\"]").sendKeys("trialout@gmail.com");
+       
+       switchToContext(driver, "NATIVE_APP");
+       driver.findElementByXPath("//*[@resource-id=\"io.selendroid.testapp:id/inputPassword\"]").sendKeys("abcd");
+       driver.context("NATIVE_APP");
+       
+       driver.context("NATIVE_APP");
+       driver.findElementByXPath("//*[@resource-id=\"io.selendroid.testapp:id/inputName\"]").clear();
+       driver.findElementByXPath("//*[@resource-id=\"io.selendroid.testapp:id/inputName\"]").sendKeys("Mr.ABC");
+       driver.hideKeyboard();
+       driver.context("NATIVE_APP");
+       driver.findElementByXPath("//*[@resource-id=\"android:id/text1\"]").click();
+       
+       driver.context("NATIVE_APP");
+       driver.findElementByXPath("//*[@text=\"PHP\"]").click();
+       
+       driver.context("NATIVE_APP");
+       driver.findElementByXPath("//*[@resource-id=\"io.selendroid.testapp:id/input_adds\"]").click();
+       
+       driver.context("NATIVE_APP");
+       driver.findElementByXPath("//*[@resource-id=\"io.selendroid.testapp:id/btnRegisterUser\"]").click();
+       
+       
+     
+       
+       
+       
+      //String elements10 = driver.findElementByXPath("//*[@resource-id=\"io.selendroid.testapp:id/inputName\"]").getAttribute("text");
+     
        
         	
         	
-            // write your code here
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,20 +126,11 @@ public class AppiumTest {
 
         System.out.println("Run ended");
     }
-    public static void Image(IOSDriver driver, String Imgpath)
+    private static void switchToContext(RemoteWebDriver driver, String context) 
     {
-   Map<String, Object> params3 = new HashMap<>();
-   params3.put("content", Imgpath);
-   params3.put("screen.top", "17%");
-   params3.put("screen.height", "25%");
-   params3.put("screen.left", "19%");
-   params3.put("screen.width", "64%");
-   params3.put("image.top", "69");
-   params3.put("image.height", "280");
-   params3.put("image.left", "38");
-   params3.put("image.width", "364");
-   params3.put("timeout", "5");
-   Object result3 = driver.executeScript("mobile:image:find", params3);
-    } 
-    
+      RemoteExecuteMethod executeMethod = new RemoteExecuteMethod(driver);
+      Map<String,String> params = new HashMap<String,String>();
+      params.put("name", context);
+      executeMethod.execute(DriverCommand.SWITCH_TO_CONTEXT, params);
+    }
 }
